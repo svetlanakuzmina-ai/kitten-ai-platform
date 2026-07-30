@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Available Kittens in Brooklyn</title>
 
@@ -13,58 +16,81 @@
 
     body {
       margin: 0;
-      background: #f6f1eb;
-      color: #292929;
+      min-height: 100vh;
       font-family: Arial, Helvetica, sans-serif;
+      background: #f5efe9;
+      color: #292522;
     }
 
-    .top {
+    header {
       padding: 38px 20px;
       text-align: center;
-      background: #ffffff;
-      border-bottom: 1px solid #e6ddd4;
+      background: white;
+      border-bottom: 1px solid #eadfd6;
     }
 
-    .top h1 {
+    header h1 {
       margin: 0;
       font-size: 34px;
     }
 
-    .top p {
+    header p {
       margin: 10px 0 0;
-      color: #777;
+      color: #746c66;
       font-size: 16px;
     }
 
-    .page {
+    main {
       width: 100%;
-      max-width: 1180px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 32px 20px 60px;
+      padding: 34px 18px 60px;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 350px));
+    #kittens {
+      display: flex;
+      flex-wrap: wrap;
       justify-content: center;
-      gap: 25px;
+      align-items: flex-start;
+      gap: 26px;
     }
 
     .card {
       width: 100%;
+      max-width: 380px;
       overflow: hidden;
-      background: #ffffff;
-      border: 1px solid #eadfd5;
+      background: white;
+      border: 1px solid #e8ddd4;
       border-radius: 20px;
-      box-shadow: 0 8px 28px rgba(60, 45, 35, 0.10);
+      box-shadow: 0 10px 30px rgba(60, 45, 35, 0.12);
+    }
+
+    .media {
+      position: relative;
+      width: 100%;
+      height: 330px;
+      background: #eee5dc;
+      overflow: hidden;
     }
 
     .photo {
+      position: absolute;
+      inset: 0;
       display: block;
       width: 100%;
-      height: 330px;
+      height: 100%;
       object-fit: cover;
-      background: #eee7df;
+    }
+
+    .placeholder {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #83766d;
+      font-size: 18px;
     }
 
     .details {
@@ -72,78 +98,98 @@
     }
 
     .name {
-      margin: 0 0 8px;
-      font-size: 27px;
+      margin: 0 0 7px;
+      font-size: 28px;
     }
 
     .breed {
-      margin: 0 0 10px;
-      color: #555;
+      margin: 0 0 12px;
+      color: #5f5752;
       font-size: 17px;
     }
 
-    .information {
+    .info {
       margin: 8px 0;
-      color: #555;
+      color: #5f5752;
+      font-size: 16px;
       line-height: 1.5;
     }
 
     .status {
       display: inline-block;
-      margin: 8px 0 4px;
+      margin-top: 6px;
       padding: 7px 13px;
-      border-radius: 20px;
-      background: #dff4e5;
-      color: #26733b;
+      border-radius: 999px;
+      background: #dff3e5;
+      color: #28703c;
       font-size: 14px;
       font-weight: bold;
       text-transform: capitalize;
     }
 
     .price {
-      margin: 14px 0 4px;
-      font-size: 27px;
+      margin: 16px 0 5px;
+      font-size: 28px;
       font-weight: bold;
     }
 
     .deposit {
-      margin: 4px 0;
-      color: #555;
+      margin: 0;
+      color: #5f5752;
     }
 
     .location {
-      margin: 14px 0 0;
-      padding-top: 14px;
-      border-top: 1px solid #eee4dc;
-      color: #666;
+      margin: 17px 0 0;
+      padding-top: 15px;
+      border-top: 1px solid #eee5de;
+      color: #6a625c;
     }
 
-    .loading {
+    .video-link {
+      display: block;
+      margin-top: 16px;
+      padding: 11px 14px;
+      text-align: center;
+      text-decoration: none;
+      background: #292522;
+      color: white;
+      border-radius: 10px;
+      font-weight: bold;
+    }
+
+    #message {
       padding: 60px 20px;
       text-align: center;
-      color: #777;
+      color: #746c66;
       font-size: 18px;
     }
 
     .error {
-      color: #a12626;
+      color: #a32b2b !important;
     }
 
-    @media (max-width: 600px) {
-      .top h1 {
+    footer {
+      padding: 25px 15px;
+      text-align: center;
+      color: #81766e;
+      font-size: 13px;
+    }
+
+    @media (max-width: 500px) {
+      header {
+        padding: 30px 15px;
+      }
+
+      header h1 {
         font-size: 28px;
       }
 
-      .page {
-        padding: 22px 14px 45px;
+      main {
+        padding: 24px 13px 45px;
       }
 
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .photo {
-        height: 300px;
+      .media {
+        height: 310px;
       }
     }
   </style>
@@ -151,15 +197,19 @@
 
 <body>
 
-  <header class="top">
+  <header>
     <h1>Available Kittens</h1>
     <p>Brooklyn, New York</p>
   </header>
 
-  <main class="page">
-    <div id="message" class="loading">Loading kittens...</div>
-    <div id="kittens" class="grid"></div>
+  <main>
+    <div id="message">Loading kittens...</div>
+    <section id="kittens"></section>
   </main>
+
+  <footer>
+    Live kitten listings · Version 5
+  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -168,17 +218,47 @@
       "https://bcklzaganpupicvrccjd.supabase.co";
 
     const SUPABASE_KEY =
-      sb_publishable_IyNUNvRWCug0k8GsTcDvFg_OM6IqPyD
+      "sb_publishable_IyNUNvRWCug0k8GsTcDvFg_0M6IqPyD";
 
-    const db = supabase.createClient(
+    const { createClient } = window.supabase;
+
+    const database = createClient(
       SUPABASE_URL,
       SUPABASE_KEY
     );
 
-    function formatDate(dateValue) {
-      if (!dateValue) return "";
+    function createElement(tag, className, text) {
+      const element = document.createElement(tag);
 
-      const date = new Date(dateValue + "T00:00:00");
+      if (className) {
+        element.className = className;
+      }
+
+      if (text !== undefined && text !== null) {
+        element.textContent = text;
+      }
+
+      return element;
+    }
+
+    function formatMoney(value) {
+      if (
+        value === null ||
+        value === undefined ||
+        value === ""
+      ) {
+        return "";
+      }
+
+      return Number(value).toLocaleString("en-US");
+    }
+
+    function formatDate(value) {
+      if (!value) {
+        return "";
+      }
+
+      const date = new Date(value + "T00:00:00");
 
       return date.toLocaleDateString("en-US", {
         month: "long",
@@ -187,112 +267,186 @@
       });
     }
 
-    function formatMoney(value) {
-      if (value === null || value === undefined || value === "") {
+    function capitalize(value) {
+      if (!value) {
         return "";
       }
 
-      return Number(value).toLocaleString("en-US");
+      return value.charAt(0).toUpperCase() + value.slice(1);
+    }
+
+    function renderKitten(kitten) {
+      const card = createElement("article", "card");
+      const media = createElement("div", "media");
+
+      const placeholder = createElement(
+        "div",
+        "placeholder",
+        "Kitten photo"
+      );
+
+      media.appendChild(placeholder);
+
+      if (kitten.photo_url) {
+        const image = document.createElement("img");
+
+        image.className = "photo";
+        image.alt = kitten.name || "Kitten";
+
+        image.onload = function () {
+          placeholder.style.display = "none";
+        };
+
+        image.onerror = function () {
+          image.remove();
+          placeholder.textContent = "Photo coming soon";
+        };
+
+        image.src = kitten.photo_url;
+        media.appendChild(image);
+      } else {
+        placeholder.textContent = "Photo coming soon";
+      }
+
+      card.appendChild(media);
+
+      const details = createElement("div", "details");
+
+      details.appendChild(
+        createElement(
+          "h2",
+          "name",
+          kitten.name || "Kitten"
+        )
+      );
+
+      if (kitten.breed) {
+        details.appendChild(
+          createElement("p", "breed", kitten.breed)
+        );
+      }
+
+      const colorGender = [
+        kitten.color,
+        capitalize(kitten.gender)
+      ]
+        .filter(Boolean)
+        .join(" • ");
+
+      if (colorGender) {
+        details.appendChild(
+          createElement("p", "info", colorGender)
+        );
+      }
+
+      if (kitten.date_of_birth) {
+        details.appendChild(
+          createElement(
+            "p",
+            "info",
+            "Born " + formatDate(kitten.date_of_birth)
+          )
+        );
+      }
+
+      details.appendChild(
+        createElement(
+          "span",
+          "status",
+          kitten.status || "available"
+        )
+      );
+
+      const price =
+        kitten.selling_price ?? kitten.price;
+
+      if (
+        price !== null &&
+        price !== undefined &&
+        price !== ""
+      ) {
+        details.appendChild(
+          createElement(
+            "div",
+            "price",
+            "$" + formatMoney(price)
+          )
+        );
+      }
+
+      if (kitten.deposit_amount) {
+        details.appendChild(
+          createElement(
+            "p",
+            "deposit",
+            "Deposit: $" +
+              formatMoney(kitten.deposit_amount)
+          )
+        );
+      }
+
+      details.appendChild(
+        createElement(
+          "p",
+          "location",
+          kitten.location || "Brooklyn, New York"
+        )
+      );
+
+      if (kitten.video_url) {
+        const videoLink = createElement(
+          "a",
+          "video-link",
+          "Watch video"
+        );
+
+        videoLink.href = kitten.video_url;
+        videoLink.target = "_blank";
+        videoLink.rel = "noopener noreferrer";
+
+        details.appendChild(videoLink);
+      }
+
+      card.appendChild(details);
+
+      return card;
     }
 
     async function loadKittens() {
       const message = document.getElementById("message");
       const container = document.getElementById("kittens");
 
-      const { data, error } = await db
-        .from("kittens")
-        .select("*")
-        .order("created_at", { ascending: false });
+      try {
+        const { data, error } = await database
+          .from("kittens")
+          .select(
+            "id,name,breed,color,gender,date_of_birth,status,selling_price,price,deposit_amount,location,photo_url,video_url,created_at"
+          )
+          .order("created_at", { ascending: false });
 
-      if (error) {
-        message.classList.add("error");
-        message.textContent = "Unable to load kittens.";
+        if (error) {
+          throw error;
+        }
+
+        if (!data || data.length === 0) {
+          message.textContent =
+            "No kittens are currently available.";
+          return;
+        }
+
+        message.style.display = "none";
+        container.innerHTML = "";
+
+        data.forEach(function (kitten) {
+          container.appendChild(renderKitten(kitten));
+        });
+      } catch (error) {
         console.error(error);
-        return;
+
+        message.classList.add("error");
+        message.textContent =
+          "The kittens could not be loaded.";
       }
-
-      if (!data || data.length === 0) {
-        message.textContent = "No kittens are currently available.";
-        return;
-      }
-
-      message.style.display = "none";
-
-      container.innerHTML = data.map(kitten => {
-        const price =
-          kitten.selling_price || kitten.price || "";
-
-        const photo =
-          kitten.photo_url ||
-          "https://placehold.co/700x650/f0e8df/6d6259?text=Kitten+Photo";
-
-        return `
-          <article class="card">
-
-            <img
-              class="photo"
-              src="${photo}"
-              alt="${kitten.name || "Kitten"}"
-              onerror="this.src='https://placehold.co/700x650/f0e8df/6d6259?text=Kitten+Photo'"
-            >
-
-            <div class="details">
-
-              <h2 class="name">
-                ${kitten.name || "Kitten"}
-              </h2>
-
-              <p class="breed">
-                ${kitten.breed || ""}
-              </p>
-
-              <p class="information">
-                ${kitten.color || ""}
-                ${kitten.gender ? " • " + kitten.gender : ""}
-              </p>
-
-              ${
-                kitten.date_of_birth
-                  ? `
-                    <p class="information">
-                      Born ${formatDate(kitten.date_of_birth)}
-                    </p>
-                  `
-                  : ""
-              }
-
-              <span class="status">
-                ${kitten.status || "available"}
-              </span>
-
-              ${
-                price
-                  ? `
-                    <div class="price">
-                      $${formatMoney(price)}
-                    </div>
-                  `
-                  : ""
-              }
-
-              ${
-                kitten.deposit_amount
-                  ? `
-                    <p class="deposit">
-                      Deposit: $${formatMoney(kitten.deposit_amount)}
-                    </p>
-                  `
-                  : ""
-              }
-
-              <p class="location">
-                ${kitten.location || "Brooklyn, New York"}
-              </p>
-
-            </div>
-          </article>
-        `;
-      }).join("");
     }
 
     loadKittens();
