@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
@@ -18,20 +19,20 @@
       margin: 0;
       min-height: 100vh;
       font-family: Arial, Helvetica, sans-serif;
-      background: #f5efe9;
+      background: #f6f1eb;
       color: #292522;
     }
 
     header {
-      padding: 38px 20px;
+      padding: 40px 20px;
       text-align: center;
-      background: white;
-      border-bottom: 1px solid #eadfd6;
+      background: #ffffff;
+      border-bottom: 1px solid #e8ded5;
     }
 
     header h1 {
       margin: 0;
-      font-size: 34px;
+      font-size: 36px;
     }
 
     header p {
@@ -44,7 +45,7 @@
       width: 100%;
       max-width: 1200px;
       margin: 0 auto;
-      padding: 34px 18px 60px;
+      padding: 35px 18px 60px;
     }
 
     #kittens {
@@ -59,14 +60,13 @@
       width: 100%;
       max-width: 380px;
       overflow: hidden;
-      background: white;
-      border: 1px solid #e8ddd4;
+      background: #ffffff;
+      border: 1px solid #e7dcd3;
       border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(60, 45, 35, 0.12);
+      box-shadow: 0 10px 30px rgba(55, 40, 30, 0.12);
     }
 
     .media {
-      position: relative;
       width: 100%;
       height: 330px;
       background: #eee5dc;
@@ -74,8 +74,6 @@
     }
 
     .photo {
-      position: absolute;
-      inset: 0;
       display: block;
       width: 100%;
       height: 100%;
@@ -98,7 +96,7 @@
     }
 
     .name {
-      margin: 0 0 7px;
+      margin: 0 0 8px;
       font-size: 28px;
     }
 
@@ -117,8 +115,8 @@
 
     .status {
       display: inline-block;
-      margin-top: 6px;
-      padding: 7px 13px;
+      margin-top: 7px;
+      padding: 7px 14px;
       border-radius: 999px;
       background: #dff3e5;
       color: #28703c;
@@ -129,7 +127,7 @@
 
     .price {
       margin: 16px 0 5px;
-      font-size: 28px;
+      font-size: 29px;
       font-weight: bold;
     }
 
@@ -139,7 +137,7 @@
     }
 
     .location {
-      margin: 17px 0 0;
+      margin: 18px 0 0;
       padding-top: 15px;
       border-top: 1px solid #eee5de;
       color: #6a625c;
@@ -148,12 +146,12 @@
     .video-link {
       display: block;
       margin-top: 16px;
-      padding: 11px 14px;
+      padding: 12px 15px;
       text-align: center;
       text-decoration: none;
       background: #292522;
-      color: white;
-      border-radius: 10px;
+      color: #ffffff;
+      border-radius: 11px;
       font-weight: bold;
     }
 
@@ -164,8 +162,8 @@
       font-size: 18px;
     }
 
-    .error {
-      color: #a32b2b !important;
+    #message.error {
+      color: #a32b2b;
     }
 
     footer {
@@ -181,7 +179,7 @@
       }
 
       header h1 {
-        font-size: 28px;
+        font-size: 29px;
       }
 
       main {
@@ -208,7 +206,7 @@
   </main>
 
   <footer>
-    Live kitten listings · Version 5
+    Live kitten listings · Version 6
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -220,26 +218,10 @@
     const SUPABASE_KEY =
       "sb_publishable_IyNUNvRWCug0k8GsTcDvFg_0M6IqPyD";
 
-    const { createClient } = window.supabase;
-
-    const database = createClient(
+    const database = window.supabase.createClient(
       SUPABASE_URL,
       SUPABASE_KEY
     );
-
-    function createElement(tag, className, text) {
-      const element = document.createElement(tag);
-
-      if (className) {
-        element.className = className;
-      }
-
-      if (text !== undefined && text !== null) {
-        element.textContent = text;
-      }
-
-      return element;
-    }
 
     function formatMoney(value) {
       if (
@@ -272,48 +254,67 @@
         return "";
       }
 
-      return value.charAt(0).toUpperCase() + value.slice(1);
+      return (
+        value.charAt(0).toUpperCase() +
+        value.slice(1)
+      );
     }
 
-    function renderKitten(kitten) {
-      const card = createElement("article", "card");
-      const media = createElement("div", "media");
+    function makeElement(tag, className, text) {
+      const element = document.createElement(tag);
 
-      const placeholder = createElement(
-        "div",
-        "placeholder",
-        "Kitten photo"
-      );
+      if (className) {
+        element.className = className;
+      }
 
-      media.appendChild(placeholder);
+      if (text !== undefined && text !== null) {
+        element.textContent = text;
+      }
+
+      return element;
+    }
+
+    function createKittenCard(kitten) {
+      const card = makeElement("article", "card");
+
+      const media = makeElement("div", "media");
 
       if (kitten.photo_url) {
         const image = document.createElement("img");
 
         image.className = "photo";
         image.alt = kitten.name || "Kitten";
-
-        image.onload = function () {
-          placeholder.style.display = "none";
-        };
+        image.src = kitten.photo_url;
 
         image.onerror = function () {
-          image.remove();
-          placeholder.textContent = "Photo coming soon";
+          media.innerHTML = "";
+
+          media.appendChild(
+            makeElement(
+              "div",
+              "placeholder",
+              "Photo coming soon"
+            )
+          );
         };
 
-        image.src = kitten.photo_url;
         media.appendChild(image);
       } else {
-        placeholder.textContent = "Photo coming soon";
+        media.appendChild(
+          makeElement(
+            "div",
+            "placeholder",
+            "Photo coming soon"
+          )
+        );
       }
 
       card.appendChild(media);
 
-      const details = createElement("div", "details");
+      const details = makeElement("div", "details");
 
       details.appendChild(
-        createElement(
+        makeElement(
           "h2",
           "name",
           kitten.name || "Kitten"
@@ -322,35 +323,44 @@
 
       if (kitten.breed) {
         details.appendChild(
-          createElement("p", "breed", kitten.breed)
+          makeElement(
+            "p",
+            "breed",
+            kitten.breed
+          )
         );
       }
 
-      const colorGender = [
+      const colorAndGender = [
         kitten.color,
         capitalize(kitten.gender)
       ]
         .filter(Boolean)
         .join(" • ");
 
-      if (colorGender) {
+      if (colorAndGender) {
         details.appendChild(
-          createElement("p", "info", colorGender)
+          makeElement(
+            "p",
+            "info",
+            colorAndGender
+          )
         );
       }
 
       if (kitten.date_of_birth) {
         details.appendChild(
-          createElement(
+          makeElement(
             "p",
             "info",
-            "Born " + formatDate(kitten.date_of_birth)
+            "Born " +
+              formatDate(kitten.date_of_birth)
           )
         );
       }
 
       details.appendChild(
-        createElement(
+        makeElement(
           "span",
           "status",
           kitten.status || "available"
@@ -358,7 +368,8 @@
       );
 
       const price =
-        kitten.selling_price ?? kitten.price;
+        kitten.selling_price ??
+        kitten.price;
 
       if (
         price !== null &&
@@ -366,7 +377,7 @@
         price !== ""
       ) {
         details.appendChild(
-          createElement(
+          makeElement(
             "div",
             "price",
             "$" + formatMoney(price)
@@ -374,9 +385,13 @@
         );
       }
 
-      if (kitten.deposit_amount) {
+      if (
+        kitten.deposit_amount !== null &&
+        kitten.deposit_amount !== undefined &&
+        kitten.deposit_amount !== ""
+      ) {
         details.appendChild(
-          createElement(
+          makeElement(
             "p",
             "deposit",
             "Deposit: $" +
@@ -386,15 +401,16 @@
       }
 
       details.appendChild(
-        createElement(
+        makeElement(
           "p",
           "location",
-          kitten.location || "Brooklyn, New York"
+          kitten.location ||
+            "Brooklyn, New York"
         )
       );
 
       if (kitten.video_url) {
-        const videoLink = createElement(
+        const videoLink = makeElement(
           "a",
           "video-link",
           "Watch video"
@@ -413,16 +429,16 @@
     }
 
     async function loadKittens() {
-      const message = document.getElementById("message");
-      const container = document.getElementById("kittens");
+      const message =
+        document.getElementById("message");
+
+      const container =
+        document.getElementById("kittens");
 
       try {
         const { data, error } = await database
           .from("kittens")
-          .select(
-            "id,name,breed,color,gender,date_of_birth,status,selling_price,price,deposit_amount,location,photo_url,video_url,created_at"
-          )
-          .order("created_at", { ascending: false });
+          .select("*");
 
         if (error) {
           throw error;
@@ -431,21 +447,33 @@
         if (!data || data.length === 0) {
           message.textContent =
             "No kittens are currently available.";
+
           return;
         }
+
+        data.sort(function (a, b) {
+          return String(b.created_at || "")
+            .localeCompare(
+              String(a.created_at || "")
+            );
+        });
 
         message.style.display = "none";
         container.innerHTML = "";
 
         data.forEach(function (kitten) {
-          container.appendChild(renderKitten(kitten));
+          container.appendChild(
+            createKittenCard(kitten)
+          );
         });
       } catch (error) {
         console.error(error);
 
         message.classList.add("error");
+
         message.textContent =
-          "The kittens could not be loaded.";
+          "Loading error: " +
+          (error.message || "Unknown error");
       }
     }
 
